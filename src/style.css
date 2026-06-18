@@ -21,33 +21,33 @@ header h1 {
 }
 
 main {
-    display:flex;
+    display: flex;
     border: 2px solid var(--gray);
-    flex:1;
-    width:97%;
+    flex: 1;
+    width: 97%;
     border-radius: 16px;
 }
-aside{
+aside {
     display: flex;
     justify-content: center;
     align-items: start;
-    flex:1;
+    flex: 1;
     border-right: 2px solid var(--gray);
 }
-aside h3{
+aside h3 {
     flex: 1;
     text-align: center;
     border-bottom: 1px solid black;
     margin-block: 0;
     font-size: 1.4rem;
 }
-section{
+section {
     display: flex;
     justify-content: center;
     align-items: start;
-    flex:3;
+    flex: 3;
 }
-section h3{
+section h3 {
     flex: 1;
     text-align: center;
     border-bottom: 1px solid black;
