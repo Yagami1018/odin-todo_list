@@ -27,6 +27,7 @@ main {
     width: 97%;
     border-radius: 16px;
 }
+
 aside {
     display: flex;
     justify-content: center;
@@ -34,6 +35,7 @@ aside {
     flex: 1;
     border-right: 2px solid var(--gray);
 }
+
 aside h3 {
     flex: 1;
     text-align: center;
@@ -41,12 +43,14 @@ aside h3 {
     margin-block: 0;
     font-size: 1.4rem;
 }
+
 section {
     display: flex;
     justify-content: center;
     align-items: start;
     flex: 3;
 }
+
 section h3 {
     flex: 1;
     text-align: center;
