@@ -13,22 +13,22 @@
     </header>
     <main>
         <aside>
-            <h3 class="task-title">Menu</h3>
+            <h3>Menu</h3>
             <form class="task-form" action="" method="post">
-                <input class="form-input" type="text" placeholder="Task..." autocomplete="off" autofocus name="task">
+                <input class="form-input" type="text" placeholder="Task..." autocomplete="off" required autofocus name="task">
                 <button class="form-btn" type="submit">Add</button>
             </form>
         </aside>
         <section>
             <h3>Tasks</h3>
             <ol class="tasks-list">
-                <li>
+                <li class="task-item">
                     <p class="task-name">
                         Walk the Dog
                     </p>
                     <div class="task-btns">
-                        <button>Toggle</button>
-                        <button>Remove</button>
+                        <button class="toggle-btn">Toggle</button>
+                        <button class="rm-btn">Remove</button>
                     </div>
                 </li>
             </ol>
