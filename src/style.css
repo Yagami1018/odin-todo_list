@@ -30,34 +30,91 @@ main {
 
 aside {
     display: flex;
-    justify-content: center;
-    align-items: start;
+    flex-direction: column;
+    align-items: center;
     flex: 1;
     border-right: 2px solid var(--gray);
+    gap: 10px;
 }
 
-aside h3 {
-    flex: 1;
-    text-align: center;
-    border-bottom: 1px solid black;
-    margin-block: 0;
-    font-size: 1.4rem;
-}
-
-section {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    flex: 3;
-}
-
-section h3 {
-    flex: 1;
+.task-title {
+    width: 100%;
     text-align: center;
     border-bottom: 1px solid black;
     margin-block: 0;
     font-size: 1.4rem;
     color: var(--gray);
+}
+
+.task-form {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    gap: 5px;
+}
+
+.form-input {
+    width: 80%;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid hsla(0, 0%, 0%, 0.5);
+    outline: none;
+}
+
+.form-input:focus {
+    border: 1px solid hsla(0, 0%, 0%);
+}
+
+.form-btn {
+    background-color: chocolate;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 8px;
+    color: white;
+}
+
+.form-btn:hover {
+    cursor: pointer;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 3;
+}
+
+section h3 {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid black;
+    margin-block: 0;
+    font-size: 1.4rem;
+    color: var(--gray);
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.tasks-list li {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-name {
+    text-align: center;
+    margin: 0;
+    flex: 3;
+}
+
+.task-btns {
+    flex: 1;
 }
 
 footer {
