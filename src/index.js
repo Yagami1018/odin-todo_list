@@ -1,6 +1,18 @@
-import Todo from "./modules/todo";
-import Project from "./modules/project";
-import { saveProjects, loadProjects } from "./modules/storage";
+import Todo from "./modules/todo.js";
+import Project from "./modules/project.js";
+import { saveProjects, loadProjects } from "./modules/storage.js";
+import {
+    renderProjects,
+    renderTodos,
+    updateProjectTitle,
+    showEditModal,
+    setupModalCloseListeners,
+} from "./modules/dom.js";
+import {
+    setupProjectEvents,
+    setupTodoEvents,
+    setupModalEvents,
+} from "./modules/events.js";
 import {} from "./styles/style.css";
 
 let projects = [];
@@ -36,8 +48,8 @@ function init() {
         const defaultProject = new Project("Inbox");
         defaultProject.addTodo(
             new Todo(
-                "Bienvenido",
-                "Esta es tu primera tarea. ¡Empieza a organizar!",
+                "Welcome!",
+                "This is your first task. Start organizing!",
                 null,
                 "medium",
             ),
@@ -46,112 +58,92 @@ function init() {
         currentProjectId = defaultProject.id;
         saveProjects(projects);
     }
+
+    setupEventListeners();
     render();
 }
+
+function setupEventListeners() {
+    setupProjectEvents(handleAddProject);
+    setupTodoEvents(handleAddTodo);
+    setupModalCloseListeners(() => render());
+    setupModalEvents();
+}
+
 function render() {
-    renderProjects();
-    renderTodos();
-}
-function renderProjects() {
-    const projectList = document.querySelector(".project-list");
-    projectList.innerHTML = "";
-    projects.forEach((project) => {
-        const li = document.createElement("li");
-        li.textContent = project.name;
-        li.dataset.id = project.id;
-        li.classList.toggle("active", project.id === currentProjectId);
-        li.addEventListener("click", () => {
-            currentProjectId = project.id;
-            render();
-        });
-        projectList.appendChild(li);
-    });
-}
-function renderTodos() {
     const currentProject = projects.find((p) => p.id === currentProjectId);
     if (!currentProject) return;
-    const todoList = document.querySelector(".todo-list");
-    todoList.innerHTML = "";
 
-    currentProject.todos.forEach((todo) => {
-        const div = document.createElement("div");
-        div.className = "todo-item";
-        div.dataset.id = todo.id;
-
-        const priorityColors = {
-            low: "green",
-            medium: "orange",
-            high: "red",
-        };
-        div.innerHTML = `
-        <input type="checkbox" ${todo.completed ? "checked" : ""}>
-        <span style="color: ${priorityColors[todo.priority]}; text-decoration: ${todo.completed ? "line-through" : "none"}">
-            ${todo.title}
-        </span>
-        <span>${todo.dueDate ? formatDate(todo.dueDate) : "Sin fecha"}</span>
-        <button class="edit-btn">📝</button>
-        <button class="delete-btn">❌</button>
-        `;
-
-        //Eventos
-        const checkbox = div.querySelector('input[type="checkbox"]');
-        checkbox.addEventListener("change", () => {
-            todo.toggleComplete();
-            saveProjects();
-            renderTodos();
-        });
-
-        const deleteBtn = div.querySelector(".delete-btn");
-        deleteBtn.addEventListener("click", () => {
-            if (confirm("Eliminar esta tarea?")) {
-                currentProject.removeTodo(todo.id);
-                saveProjects();
-                renderTodos();
-            }
-        });
-
-        const editBtn = div.querySelector(".edit-btn");
-        editBtn.addEventListener("click", () => {
-            showEditModal(todo);
-        });
-
-        todoList.appendChild(div);
-    });
+    renderProjects(projects, currentProjectId, handleSelectProject);
+    updateProjectTitle(currentProject.name);
+    renderTodos(
+        currentProject.todos,
+        handleToggleTodo,
+        handleDeleteTodo,
+        handleEditTodo,
+    );
 }
 
-function showEditModal(todo) {
-    //TODO crear modal con formulario para editar titulo, descripcion, fecha, prioridad, notas
+function handleSelectProject(projectId) {
+    currentProjectId = projectId;
+    render();
 }
 
-import { format } from "date-fns";
+function handleToggleTodo(todoId) {
+    const currentProject = projects.find((p) => p.id === currentProjectId);
+    if (!currentProject) return;
 
-function formatDate(date) {
-    if (!date) return "";
-    return format(new Date(date), "dd/MM/yyyy");
-}
-
-document.addEventListener("DOMContentLoaded", init);
-
-document.querySelector(".add-project-btn")?.addEventListener("click", () => {
-    const name = prompt("Nombre del Proyecto:");
-    if (name) {
-        const project = new Project(name);
-        projects.push(project);
-        currentProjectId = project.id;
+    const todo = currentProject.getTodo(todoId);
+    if (todo) {
+        todo.toggleComplete();
         saveProjects(projects);
         render();
     }
-});
+}
 
-document.querySelector(".add-todo-btn")?.addEventListener("click", () => {
-    const title = prompt("Titulo de la tarea:");
-    if (title) {
-        const currentProject = projects.find((p) => p.id === currentProjectId);
-        if (currentProject) {
-            const todo = new Todo(title);
-            currentProject.addTodo(todo);
-            saveProjects(projects);
-            renderTodos();
-        }
+function handleDeleteTodo(todoId) {
+    if (!confirm("Delete this task?")) return;
+
+    const currentProject = projects.find((p) => p.id === currentProjectId);
+    if (!currentProject) return;
+
+    currentProject.removeTodo(todoId);
+    saveProjects(projects);
+    render();
+}
+
+function handleEditTodo(todo) {
+    showEditModal(todo, handleSaveEditedTodo);
+}
+
+function handleSaveEditedTodo(todoId, updatedData) {
+    const currentProject = projects.find((p) => p.id === currentProjectId);
+    if (!currentProject) return;
+
+    const todo = currentProject.getTodo(todoId);
+    if (todo) {
+        todo.updateDetails(updatedData);
+        saveProjects(projects);
+        render();
     }
-});
+}
+
+function handleAddProject(name) {
+    const project = new Project(name);
+    projects.push(project);
+    currentProjectId = project.id;
+    saveProjects(projects);
+    render();
+}
+
+function handleAddTodo(title) {
+    const currentProject = projects.find((p) => p.id === currentProjectId);
+    if (!currentProject) return;
+
+    const todo = new Todo(title);
+    currentProject.addTodo(todo);
+    saveProjects(projects);
+    render();
+}
+
+document.addEventListener("DOMContentLoaded", init);

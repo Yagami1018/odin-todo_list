@@ -4,31 +4,77 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToDo</title>
+    <title>ToDo List</title>
 </head>
 
 <body>
-    <header>
-        <h1>ToDo List</h1>
-    </header>
-    <main>
-        <aside>
-            <h3>Menu</h3>
-            <form class="task-form" action="" method="post">
-                <input class="form-input" type="text" placeholder="Task..." autocomplete="off" required autofocus
-                    name="task">
-                <button class="form-btn" type="submit">Add</button>
-            </form>
-        </aside>
-        <section>
-            <h3>Tasks</h3>
-            <ol class="tasks-list">
-            </ol>
-        </section>
-    </main>
-    <footer>
-        <a href="https://github.com/Yagami1018" target="_blank"> &copy;Yagami1018</a>
-    </footer>
+    <div class="container">
+        <header>
+            <h1>📋 ToDo List</h1>
+        </header>
+
+        <main>
+            <aside class="sidebar">
+                <div class="projects-section">
+                    <h3>Projects</h3>
+                    <ul class="project-list"></ul>
+                    <button class="add-project-btn">+ New Project</button>
+                </div>
+            </aside>
+
+            <section class="main-content">
+                <div class="todos-header">
+                    <h3 id="project-title">Inbox</h3>
+                    <button class="add-todo-btn">+ Add Task</button>
+                </div>
+                <div class="todo-list"></div>
+            </section>
+        </main>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Task</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <form id="edit-form">
+                    <div class="form-group">
+                        <label for="edit-title">Title:</label>
+                        <input type="text" id="edit-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Description:</label>
+                        <textarea id="edit-description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-due-date">Due Date:</label>
+                        <input type="date" id="edit-due-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-priority">Priority:</label>
+                        <select id="edit-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-notes">Notes:</label>
+                        <textarea id="edit-notes"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save</button>
+                        <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <a href="https://github.com/Yagami1018" target="_blank">&copy; Yagami1018</a>
+        </footer>
+    </div>
 </body>
 
 </html>

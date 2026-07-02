@@ -16,14 +16,31 @@ export default class Todo {
     }
 
     setPriority(priority) {
-        this.priority = priority;
+        if (["low", "medium", "high"].includes(priority)) {
+            this.priority = priority;
+        }
     }
 
     updateDetails({ title, description, dueDate, priority, notes }) {
         if (title) this.title = title;
-        if (description) this.description = description;
-        if (dueDate) this.dueDate = dueDate;
-        if (priority) this.priority = priority;
+        if (description !== undefined) this.description = description;
+        if (dueDate !== undefined) this.dueDate = dueDate || null;
+        if (priority) this.setPriority(priority);
         if (notes !== undefined) this.notes = notes;
+    }
+
+    addChecklistItem(item) {
+        this.checklist.push({ id: Date.now(), text: item, completed: false });
+    }
+
+    removeChecklistItem(id) {
+        this.checklist = this.checklist.filter((item) => item.id !== id);
+    }
+
+    toggleChecklistItem(id) {
+        const item = this.checklist.find((i) => i.id === id);
+        if (item) {
+            item.completed = !item.completed;
+        }
     }
 }
