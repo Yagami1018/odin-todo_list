@@ -9,6 +9,7 @@ body {
     align-items: center;
     min-height: 100vh;
     justify-content: space-between;
+    background-color: hsl(0, 0%, 90%);
 }
 
 header {
@@ -21,11 +22,13 @@ header h1 {
 }
 
 main {
+    background-color: white;
     display: flex;
     border: 2px solid var(--gray);
     flex: 1;
     width: 97%;
     border-radius: 16px;
+    box-shadow: 0 10px 30px hsl(0, 0%, 0%, 0.5);
 }
 
 aside {
@@ -143,6 +146,14 @@ section h3 {
     border-radius: 8px;
     padding: 8px 16px;
     cursor: pointer;
+}
+
+button {
+    box-shadow: 0 2px 2px black;
+}
+
+button:active {
+    box-shadow: 0 1px 1px black;
 }
 
 footer {
