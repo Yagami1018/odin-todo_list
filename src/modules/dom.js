@@ -6,7 +6,12 @@ const priorityColors = {
     high: "#e74c3c",
 };
 
-export function renderProjects(projects, currentProjectId, onProjectSelect) {
+export function renderProjects(
+    projects,
+    currentProjectId,
+    onProjectSelect,
+    onProjectDelete,
+) {
     const projectList = document.querySelector(".project-list");
     projectList.innerHTML = "";
 
@@ -23,7 +28,7 @@ export function renderProjects(projects, currentProjectId, onProjectSelect) {
         // Add context menu for delete/edit
         li.addEventListener("contextmenu", (e) => {
             e.preventDefault();
-            showProjectContextMenu(li, project.id, onProjectSelect);
+            showProjectContextMenu(li, project.id, onProjectDelete);
         });
 
         projectList.appendChild(li);
@@ -145,10 +150,8 @@ export function setupModalCloseListeners(onClose) {
 }
 
 function showProjectContextMenu(element, projectId, onDelete) {
-    // Simple context menu using confirm
-    if (confirm("Delete this project?")) {
-        onDelete?.(projectId);
-    }
+    // Invoke delete callback; confirmation is handled by the caller
+    onDelete?.(projectId);
 }
 
 function formatDate(date) {

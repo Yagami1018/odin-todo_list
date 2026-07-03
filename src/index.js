@@ -74,7 +74,12 @@ function render() {
     const currentProject = projects.find((p) => p.id === currentProjectId);
     if (!currentProject) return;
 
-    renderProjects(projects, currentProjectId, handleSelectProject);
+    renderProjects(
+        projects,
+        currentProjectId,
+        handleSelectProject,
+        handleDeleteProject,
+    );
     updateProjectTitle(currentProject.name);
     renderTodos(
         currentProject.todos,
@@ -82,6 +87,21 @@ function render() {
         handleDeleteTodo,
         handleEditTodo,
     );
+}
+
+function handleDeleteProject(projectId) {
+    if (!confirm("Delete this project?")) return;
+
+    // Remove the project
+    projects = projects.filter((p) => p.id !== projectId);
+
+    // If the deleted project was active, select another
+    if (currentProjectId === projectId) {
+        currentProjectId = projects[0]?.id || null;
+    }
+
+    saveProjects(projects);
+    render();
 }
 
 function handleSelectProject(projectId) {
